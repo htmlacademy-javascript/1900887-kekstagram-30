@@ -60,4 +60,4 @@ const generateDescriptions = () => {
   return picturesDescriptions;
 };
 
-generateDescriptions();
+export {generateDescriptions};
