@@ -1,2 +1,2 @@
 import './posts.js';
-import './render.js'
+import './render.js';
