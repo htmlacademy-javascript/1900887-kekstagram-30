@@ -1,2 +1,3 @@
-import './posts.js';
-import './render.js';
+import {createPictures} from './render.js';
+
+createPictures();
