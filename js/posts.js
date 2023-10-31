@@ -1,11 +1,11 @@
-import { getRandomArrayElement, getRandomInt } from './controllers.js';
+import { getRandomArrayElement, getRandomInt } from './utils.js';
 
 const COMMENTS_COUNT_MIN = 0;
 const COMMENTS_COUNT_MAX = 30;
 const POSTS_COUNT = 25;
 const LIKES_COUNT_MIN = 15;
 const LIKES_COUNT_MAX = 200;
-const AVATAR_COUNT_MIN = 0;
+const AVATAR_COUNT_MIN = 1;
 const AVATAR_COUNT_MAX = 6;
 
 let commentID = 1;
