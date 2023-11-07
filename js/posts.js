@@ -1,13 +1,15 @@
-import { getPictureDescription, getRandomArrayElement, getRandomInt } from './controllers';
+import { getRandomArrayElement, getRandomInt } from './utils.js';
 
 const COMMENTS_COUNT_MIN = 0;
 const COMMENTS_COUNT_MAX = 30;
 const POSTS_COUNT = 25;
 const LIKES_COUNT_MIN = 15;
 const LIKES_COUNT_MAX = 200;
-const AVATAR_COUNT_MIN = 0;
+const AVATAR_COUNT_MIN = 1;
 const AVATAR_COUNT_MAX = 6;
+
 let commentID = 1;
+let postID = 1;
 
 const COMMENTS_SENTENCES = [
   'Всё отлично!',
@@ -27,37 +29,21 @@ const NAMES = [
   'Даниил','Борис', 'Женя', 'Анна', 'Александра', 'Юля', 'Полина', 'Алёна', 'Кристина',
 ];
 
+const createComment = () => ({
+  id: commentID++,
+  avatar: `img/avatar-${getRandomInt(AVATAR_COUNT_MIN, AVATAR_COUNT_MAX)}.svg`,
+  message: getRandomArrayElement(COMMENTS_SENTENCES),
+  name: getRandomArrayElement(NAMES)
+});
 
-const getComments = () => {
+const createPost = () => ({
+  id: postID,
+  url: `photos/${postID++}.jpg`,
+  description: getRandomArrayElement(DESCRIPTION_SENTENCES),
+  likes: getRandomInt(LIKES_COUNT_MIN, LIKES_COUNT_MAX),
+  comments: Array.from({length: getRandomInt(COMMENTS_COUNT_MIN, COMMENTS_COUNT_MAX)}, createComment)
+});
 
-  const commentsCount = getRandomInt(COMMENTS_COUNT_MIN, COMMENTS_COUNT_MAX);
-
-  const comments = [];
-
-  for (let i = 0; i < commentsCount; i++) {
-    const avatar = `img/avatar-${getRandomInt(AVATAR_COUNT_MIN, AVATAR_COUNT_MAX)}.svg`;
-    const message = getRandomArrayElement(COMMENTS_SENTENCES);
-    const name = getRandomArrayElement(NAMES);
-
-    comments.push({id: commentID, avatar: avatar, message: message, name: name});
-
-    commentID++;
-  }
-
-  return comments;
-};
-
-const generateDescriptions = () => {
-  const picturesDescriptions = [];
-
-  for (let i = 1; i <= POSTS_COUNT; i++) {
-    const description = getRandomArrayElement(DESCRIPTION_SENTENCES);
-    const likes = getRandomInt(LIKES_COUNT_MIN, LIKES_COUNT_MAX);
-    const comments = getComments();
-    picturesDescriptions.push(getPictureDescription(i, i, description, likes, comments));
-  }
-
-  return picturesDescriptions;
-};
+const generateDescriptions = () => Array.from({length: POSTS_COUNT}, createPost);
 
 export {generateDescriptions};
