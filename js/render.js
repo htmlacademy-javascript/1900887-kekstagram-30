@@ -1,5 +1,5 @@
 import { generateDescriptions } from './posts.js';
-import { renderBigPicture } from './renderBigPicture.js';
+import { renderBigPicture } from './render-big-picture.js';
 
 const pictureTemplate = document.querySelector('#picture').content;
 const picturesContainer = document.querySelector('.pictures');
