@@ -10,7 +10,7 @@ const commentsLoaderBtn = document.querySelector('.social__comments-loader');
 const commentsCount = document.querySelector('.social__comment-count');
 const commentsShownCount = document.querySelector('.social__comment-shown-count');
 
-const DEFAULT_SHOWN_COMMENTS_COUNT = 5;
+const DEFAULT_COMMENTS_COUNT = 5;
 let showedComments = 0;
 let comments = [];
 const onCancelClick = () => {
@@ -32,8 +32,8 @@ const createComment = (comment) => {
   return commentClone;
 };
 const renderComments = (pictureComments) => {
-  pictureComments.slice(showedComments, showedComments + DEFAULT_SHOWN_COMMENTS_COUNT).forEach((comment) => bigPictureComments.appendChild(createComment(comment)));
-  showedComments = Math.min(showedComments + DEFAULT_SHOWN_COMMENTS_COUNT, pictureComments.length);
+  pictureComments.slice(showedComments, showedComments + DEFAULT_COMMENTS_COUNT).forEach((comment) => bigPictureComments.appendChild(createComment(comment)));
+  showedComments = Math.min(showedComments + DEFAULT_COMMENTS_COUNT, pictureComments.length);
   commentsShownCount.textContent = showedComments;
 
   if (showedComments === comments.length) {
