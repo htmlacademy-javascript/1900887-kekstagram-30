@@ -98,10 +98,8 @@ function openModal() {
 
   createPristineObj();
   createPristineValidators();
-
   textHashTags.addEventListener('focusin', removeEscapeListener);
   textHashTags.addEventListener('focusout', addEscapeListener);
-
   textComments.addEventListener('focusin', removeEscapeListener);
   textComments.addEventListener('focusout', addEscapeListener);
 
