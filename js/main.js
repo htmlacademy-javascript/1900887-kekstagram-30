@@ -1,5 +1,5 @@
-import { createPictures } from './render.js';
-import { uploadImage } from './validate-form.js';
+import { createPictures } from './posts/render.js';
+import { uploadImage } from './form/form';
 
 createPictures();
 uploadImage();
