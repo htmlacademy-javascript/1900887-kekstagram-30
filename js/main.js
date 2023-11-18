@@ -1,5 +1,3 @@
-import { createPictures } from './render.js';
-import { uploadImage } from './validate-form.js';
+import {init} from './server/fetch.js';
 
-createPictures();
-uploadImage();
+init();
