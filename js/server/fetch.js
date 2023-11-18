@@ -17,7 +17,7 @@ const hideErrorMessage = () => {
   }, 5000);
 };
 
-const handleError = (error) => {
+const handleError = () => {
   document.body.insertAdjacentElement('beforeend', dataError);
   hideErrorMessage();
 };
@@ -25,6 +25,6 @@ const handleError = (error) => {
 const init = () => fetch(SERVER_URL)
   .then((response) => response.json())
   .then((data) => processData(data))
-  .catch((error) => handleError(error));
+  .catch(() => handleError());
 
 export {init};
