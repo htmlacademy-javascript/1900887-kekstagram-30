@@ -1,28 +1,25 @@
-import { generateDescriptions } from './posts.js';
 import { renderBigPicture } from './render-big-picture.js';
 
 const pictureTemplate = document.querySelector('#picture').content;
 const picturesContainer = document.querySelector('.pictures');
 
-const picturesDescriptions = generateDescriptions();
+const createImage = (pictureData) => {
+  const imageElement = pictureTemplate.cloneNode(true);
 
-const createPicture = (pictureData) => {
-  const pictureElement = pictureTemplate.cloneNode(true);
+  const image = imageElement.querySelector('.picture__img');
 
-  const pictureImg = pictureElement.querySelector('.picture__img');
+  image.src = pictureData.url;
+  image.alt = pictureData.description;
+  imageElement.querySelector('.picture__likes').textContent = pictureData.likes;
+  imageElement.querySelector('.picture__comments').textContent = pictureData.comments.length;
 
-  pictureImg.src = pictureData.url;
-  pictureImg.alt = pictureData.description;
-  pictureElement.querySelector('.picture__likes').textContent = pictureData.likes;
-  pictureElement.querySelector('.picture__comments').textContent = pictureData.comments.length;
+  image.addEventListener('click', () => renderBigPicture(pictureData));
 
-  pictureImg.addEventListener('click', () => renderBigPicture(pictureData));
-
-  picturesContainer.appendChild(pictureElement);
+  picturesContainer.appendChild(imageElement);
 };
 
-const createPictures = () => {
-  picturesDescriptions.forEach((picture) => createPicture(picture));
+const createImages = (data) => {
+  data.forEach((image) => createImage(image));
 };
 
-export {createPictures};
+export {createImages};

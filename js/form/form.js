@@ -2,6 +2,7 @@ import {isEscapeKey} from '../utils/utils.js';
 import {addValidators, validateForm, resetPristine} from './validate-form.js';
 import {scalePreview} from './scale-preview.js';
 import {initSlider, resetSlider} from './add-effect.js';
+// import {setEffects, resetSlider} from './add-effect.js';
 
 const uploadForm = document.querySelector('.img-upload__form');
 const uploadFormInput = document.querySelector('.img-upload__input');
@@ -19,7 +20,10 @@ const onUploadCancelClick = () => {
 };
 const onFormSubmit = (evt) => {
   evt.preventDefault();
-  validateForm();
+  const isValid = validateForm();
+  if (isValid) {
+    const formData = new FormData(evt.target)
+  }
 };
 function closeForm() {
   uploadFormEdit.classList.add('hidden');
@@ -27,6 +31,7 @@ function closeForm() {
   document.removeEventListener('keydown', onDocumentKeydown);
   resetPristine();
   resetSlider();
+  // resetSlider();
 }
 function openForm() {
   uploadFormEdit.classList.remove('hidden');
@@ -38,6 +43,7 @@ function openForm() {
 const handleInputChange = () => {
   addValidators();
   initSlider();
+  // setEffects();
   scalePreview();
   openForm();
 };
