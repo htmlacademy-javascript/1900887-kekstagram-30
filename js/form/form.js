@@ -22,7 +22,7 @@ const onFormSubmit = (evt) => {
   evt.preventDefault();
   const isValid = validateForm();
   if (isValid) {
-    const formData = new FormData(evt.target)
+    // const formData = new FormData(evt.target);
   }
 };
 function closeForm() {
