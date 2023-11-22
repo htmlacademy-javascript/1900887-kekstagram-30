@@ -1,4 +1,5 @@
 const SERVER_URL = 'https://30.javascript.pages.academy/kekstagram/data';
+const ALERT_SHOW_TIME = 5000;
 
 import {uploadImage} from '../form/form.js';
 import {createImages} from '../posts/render.js';
@@ -14,7 +15,7 @@ const processData = (data) => {
 const hideErrorMessage = () => {
   setTimeout(() => {
     document.body.removeChild(dataError);
-  }, 5000);
+  }, ALERT_SHOW_TIME);
 };
 
 const handleError = () => {
