@@ -12,7 +12,7 @@ let currentScale = MAX_SCALE;
 
 const changeScale = () => {
   scaleControlValue.value = `${currentScale}%`;
-  imagePreview.style.transform = `scale(${currentScale / DIVIDERw})`;
+  imagePreview.style.transform = `scale(${currentScale / DIVIDER})`;
 };
 const onScaleSmallerBtnClick = () => {
   currentScale = Math.max(currentScale - SCALE_STEP, MIN_SCALE);
