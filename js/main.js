@@ -1,3 +1,5 @@
-import {init} from './server/fetch.js';
+import {fetchData} from './server/fetch.js';
+import {uploadImage} from './form/form.js';
 
-init();
+fetchData();
+uploadImage();

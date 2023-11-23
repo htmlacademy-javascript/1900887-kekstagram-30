@@ -18,8 +18,8 @@ const createImage = (pictureData) => {
   picturesContainer.appendChild(imageElement);
 };
 
-const createImages = (data) => {
-  data.forEach((image) => createImage(image));
+const createImages = (images) => {
+  images.forEach((image) => createImage(image));
 };
 
 export {createImages};
