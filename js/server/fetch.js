@@ -6,7 +6,6 @@ const FETCH_SERVER_URL = `${UPLOAD_SERVER_URL}/data`;
 
 const ALERT_SHOW_TIME = 5000;
 
-
 const dataErrorTemplate = document.querySelector('#data-error').content;
 const dataError = dataErrorTemplate.querySelector('.data-error');
 

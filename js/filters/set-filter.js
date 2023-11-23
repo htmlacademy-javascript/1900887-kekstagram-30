@@ -1,5 +1,4 @@
 import {applyFilterDefault, applyFilterRandom, applyFilterDiscussed} from './filters.js';
-import {debounce} from '../utils/utils.js';
 
 const filterDefault = document.querySelector('#filter-default');
 const filterRandom = document.querySelector('#filter-random');
