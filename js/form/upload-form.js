@@ -13,13 +13,9 @@ const isSuccess = () => document.body.contains(successMessage);
 
 const isError = () => document.body.contains(errorMessage);
 
-const onErrorBtnClick = () => {
-  document.body.removeChild(errorMessage);
-};
+const onErrorBtnClick = () => document.body.removeChild(errorMessage);
 
-const onSuccessBtnClick = () => {
-  document.body.removeChild(successMessage);
-};
+const onSuccessBtnClick = () => document.body.removeChild(successMessage);
 
 const closeMessageWin = () => {
   errorButton.removeEventListener('click', onErrorBtnClick);

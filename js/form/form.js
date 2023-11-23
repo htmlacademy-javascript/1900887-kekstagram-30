@@ -9,6 +9,7 @@ const uploadFormInput = document.querySelector('.img-upload__input');
 const uploadFormEdit = document.querySelector('.img-upload__overlay');
 const imgUploadCancelBtn = document.querySelector('.img-upload__cancel');
 const submitBtn = document.querySelector('.img-upload__submit');
+const imgUploadPreview = document.querySelector('.img-upload__preview img');
 
 const onUploadCancelClick = () => {
   closeForm();
@@ -36,16 +37,25 @@ function closeForm() {
   resetImageScale();
   disableSubmitBtn(false);
 }
+
+const setUploadImage = () => {
+  const file = uploadFormInput.files[0];
+  imgUploadPreview.src = URL.createObjectURL(file);
+};
+
 function openForm() {
   uploadFormEdit.classList.remove('hidden');
   document.body.classList.add('modal-open');
+  setUploadImage();
   document.addEventListener('keydown', onDocumentKeydown);
   imgUploadCancelBtn.addEventListener('click', onUploadCancelClick);
   uploadForm.addEventListener('submit', onFormSubmit);
 }
+
 const handleInputChange = () => {
   openForm();
 };
+
 const uploadImage = () => {
   initSlider();
   addValidators();
