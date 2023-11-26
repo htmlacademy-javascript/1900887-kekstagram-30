@@ -1,6 +1,7 @@
 const MIN_SCALE = 25;
 const SCALE_STEP = 25;
 const MAX_SCALE = 100;
+const DIVIDER = 100;
 
 const scaleButtonSmaller = document.querySelector('.scale__control--smaller');
 const scaleButtonBigger = document.querySelector('.scale__control--bigger');
@@ -11,7 +12,7 @@ let currentScale = MAX_SCALE;
 
 const changeScale = () => {
   scaleControlValue.value = `${currentScale}%`;
-  imagePreview.style.transform = `scale(${currentScale / 100})`;
+  imagePreview.style.transform = `scale(${currentScale / DIVIDER})`;
 };
 const onScaleSmallerBtnClick = () => {
   currentScale = Math.max(currentScale - SCALE_STEP, MIN_SCALE);
@@ -22,7 +23,7 @@ const onScaleBiggerBtnClick = () => {
   changeScale();
 };
 
-const resetScale = () => {
+const resetImageScale = () => {
   currentScale = MAX_SCALE;
   changeScale();
 };
@@ -32,4 +33,4 @@ const scalePreview = () => {
   scaleButtonBigger.addEventListener('click', onScaleBiggerBtnClick);
 };
 
-export {scalePreview, resetScale};
+export {scalePreview, resetImageScale};

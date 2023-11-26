@@ -1,36 +1,31 @@
-import {isEscapeKey} from '../utils/utils.js';
 import {addValidators, validateForm, resetPristine} from './validate-form.js';
-import {scalePreview} from './scale-preview.js';
+import {resetImageScale, scalePreview} from './scale-preview.js';
 import {initSlider, resetSlider} from './add-effect.js';
-import {uploadFormData} from './upload-form.js';
-// import {setEffects, resetSlider} from './add-effect.js';
+import {postData} from '../server/fetch.js';
+import {onUploadError, onUploadSuccess, onDocumentKeydown} from './upload-form.js';
 
 const uploadForm = document.querySelector('.img-upload__form');
 const uploadFormInput = document.querySelector('.img-upload__input');
 const uploadFormEdit = document.querySelector('.img-upload__overlay');
 const imgUploadCancelBtn = document.querySelector('.img-upload__cancel');
+const submitBtn = document.querySelector('.img-upload__submit');
+const imgUploadPreview = document.querySelector('.img-upload__preview img');
 
-const successTemplate = document.querySelector('#success').content;
-const successMessage = successTemplate.querySelector('.success');
-const errorTemplate = document.querySelector('#error').content;
-const errorMessage = errorTemplate.querySelector('.error');
-
-const onDocumentKeydown = (evt) => {
-  if (isEscapeKey(evt) && !evt.target.closest('.text__hashtags') && !evt.target.closest('.text__description') && !document.body.contains(successMessage) && !document.body.contains(errorMessage)) {
-    evt.preventDefault();
-    closeForm();
-  }
-};
 const onUploadCancelClick = () => {
   closeForm();
 };
 
+const disableSubmitBtn = (isDisabled) => {
+  submitBtn.disabled = isDisabled;
+};
+
 const onFormSubmit = (evt) => {
   evt.preventDefault();
+  disableSubmitBtn(true);
   const isValid = validateForm();
   if (isValid) {
     const formData = new FormData(evt.target);
-    uploadFormData(formData);
+    postData(formData, onUploadSuccess, onUploadError);
   }
 };
 function closeForm() {
@@ -39,17 +34,28 @@ function closeForm() {
   document.removeEventListener('keydown', onDocumentKeydown);
   resetPristine();
   resetSlider();
+  resetImageScale();
+  disableSubmitBtn(false);
 }
+
+const setUploadImage = () => {
+  const file = uploadFormInput.files[0];
+  imgUploadPreview.src = URL.createObjectURL(file);
+};
+
 function openForm() {
   uploadFormEdit.classList.remove('hidden');
   document.body.classList.add('modal-open');
+  setUploadImage();
   document.addEventListener('keydown', onDocumentKeydown);
   imgUploadCancelBtn.addEventListener('click', onUploadCancelClick);
   uploadForm.addEventListener('submit', onFormSubmit);
 }
+
 const handleInputChange = () => {
   openForm();
 };
+
 const uploadImage = () => {
   initSlider();
   addValidators();
@@ -57,4 +63,4 @@ const uploadImage = () => {
   uploadFormInput.addEventListener('change', handleInputChange);
 };
 
-export {uploadImage, closeForm};
+export {uploadImage, closeForm, disableSubmitBtn};
