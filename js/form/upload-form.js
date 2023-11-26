@@ -18,22 +18,24 @@ const onErrorBtnClick = () => document.body.removeChild(errorMessage);
 const onSuccessBtnClick = () => document.body.removeChild(successMessage);
 
 const closeMessageWin = () => {
-  errorButton.removeEventListener('click', onErrorBtnClick);
   window.removeEventListener('click', onWindowClick);
+  document.removeEventListener('keydown', onDocumentKeydown);
+  document.body.classList.remove('modal-open');
 
   if (isSuccess()) {
     document.body.removeChild(successMessage);
+    successButton.removeEventListener('click', onSuccessBtnClick);
   } else {
     document.body.removeChild(errorMessage);
+    errorButton.removeEventListener('click', onErrorBtnClick);
   }
 };
 
-const onDocumentKeydown = (evt) => {
-  if (isEscapeKey(evt) && !evt.target.closest('.text__hashtags') && !evt.target.closest('.text__description') && !isSuccess() && !isError()) {
-    evt.preventDefault();
-    closeForm();
+function onDocumentKeydown(evt) {
+  if (isEscapeKey(evt) && (isSuccess() || isError())) {
+    closeMessageWin();
   }
-};
+}
 
 function onWindowClick(evt) {
   if ((!successMessage.contains(evt.target) || !errorMessage.contains(evt.target)) && (isSuccess() || isError())) {
@@ -44,11 +46,17 @@ function onWindowClick(evt) {
 const onUploadSuccess = (response) => {
   if (response.ok) {
     document.body.insertAdjacentElement('beforeend', successMessage);
+    document.body.classList.add('modal-open');
     successButton.addEventListener('click', onSuccessBtnClick);
     window.addEventListener('click', onWindowClick);
+    document.addEventListener('keydown', onDocumentKeydown);
     closeForm();
   } else {
-    throw new Error();
+    document.body.insertAdjacentElement('beforeend', errorMessage);
+    errorButton.addEventListener('click', onErrorBtnClick);
+    window.addEventListener('click', onWindowClick);
+    document.addEventListener('keydown', onDocumentKeydown);
+    disableSubmitBtn(false);
   }
 };
 
@@ -56,7 +64,8 @@ const onUploadError = () => {
   document.body.insertAdjacentElement('beforeend', errorMessage);
   errorButton.addEventListener('click', onErrorBtnClick);
   window.addEventListener('click', onWindowClick);
+  document.addEventListener('keydown', onDocumentKeydown);
   disableSubmitBtn(false);
 };
 
-export {onUploadError, onUploadSuccess, onDocumentKeydown};
+export {onUploadError, onUploadSuccess, isSuccess, isError};

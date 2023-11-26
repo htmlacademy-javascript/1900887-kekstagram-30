@@ -1,5 +1,5 @@
-import {fetchData} from './server/fetch.js';
+import {getData} from './server/server.js';
 import {uploadImage} from './form/form.js';
 
-fetchData();
+getData();
 uploadImage();
