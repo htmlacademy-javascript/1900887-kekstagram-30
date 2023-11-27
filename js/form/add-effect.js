@@ -21,13 +21,13 @@ const hideSlider = () => slider.classList.add('hidden');
 const showSlider = () => slider.classList.remove('hidden');
 
 const onSliderUpdate = () => {
-  effectLevelValue.value = slider.noUiSlider.get();
+  effectLevelValue.value = Math.abs(slider.noUiSlider.get());
   imagePreview.style.filter = `${currentEffect.style}(${effectLevelValue.value}${currentEffect.unit})`;
 };
 
 const createSlider = (effect) => {
   effectLevel.classList.add('hidden');
-  noUiSlider.create(slider, {start: effect.max, range: {min: effect.min, max: effect.max}, step: Math.abs(effect.step), connect: 'lower'});
+  noUiSlider.create(slider, {start: effect.max, range: {min: effect.min, max: effect.max}, step: effect.step, connect: 'lower'});
   slider.noUiSlider.on('update', onSliderUpdate);
   hideSlider();
 };
@@ -45,7 +45,7 @@ const setEffect = (effect) => {
   slider.noUiSlider.updateOptions({
     start: currentEffect.max,
     range: {min: currentEffect.min, max: currentEffect.max},
-    step: Math.abs(currentEffect.step),
+    step: currentEffect.step,
   });
   imagePreview.style.filter = `${currentEffect.style}(${currentEffect.max}${currentEffect.unit})`;
 

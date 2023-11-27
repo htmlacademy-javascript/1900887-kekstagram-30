@@ -32,7 +32,7 @@ const setFilter = debounce((filter) => getFilter(filter));
 const applyFilter = (button) => {
   setButtonState(button);
   clearPicturesContainer();
-  getFilter(button.id);
+  setFilter(button.id);
 };
 
 const onFilterButtonClick = (evt) => applyFilter(evt.target);
