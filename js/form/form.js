@@ -27,7 +27,7 @@ const disableSubmitBtn = (isDisabled) => {
   submitBtn.disabled = isDisabled;
 };
 
-const onFormSubmit = (evt) => {
+const onFormSubmit = async (evt) => {
   evt.preventDefault();
   disableSubmitBtn(true);
   const isValid = validateForm();
@@ -36,17 +36,6 @@ const onFormSubmit = (evt) => {
     sendData(formData, onUploadSuccess, onUploadError);
   }
 };
-function closeForm() {
-  uploadFormEdit.classList.add('hidden');
-  if (!document.body.contains(document.querySelector('.success')) && !document.body.contains(document.querySelector('.error'))) {
-    document.body.classList.remove('modal-open');
-  }
-  document.removeEventListener('keydown', onDocumentKeydown);
-  resetPristine();
-  resetSlider();
-  resetImageScale();
-  disableSubmitBtn(false);
-}
 
 const setUploadImage = () => {
   const file = uploadFormInput.files[0];
@@ -59,10 +48,11 @@ const setUploadImage = () => {
       image.style.backgroundImage = `url('${URL.createObjectURL(file)}')`;
     });
   }
+
+  openForm();
 };
 
 function openForm() {
-  setUploadImage();
   document.addEventListener('keydown', onDocumentKeydown);
   imgUploadCancelBtn.addEventListener('click', onUploadCancelClick);
   uploadForm.addEventListener('submit', onFormSubmit);
@@ -70,7 +60,19 @@ function openForm() {
   uploadFormEdit.classList.remove('hidden');
 }
 
-const handleInputChange = () => openForm();
+function closeForm() {
+  uploadFormEdit.classList.add('hidden');
+  uploadFormInput.value = '';
+  document.body.classList.remove('modal-open');
+  document.removeEventListener('keydown', onDocumentKeydown);
+  uploadForm.reset();
+  resetPristine();
+  resetSlider();
+  resetImageScale();
+  disableSubmitBtn(false);
+}
+
+const handleInputChange = () => setUploadImage();
 
 const uploadImage = () => {
   initSlider();

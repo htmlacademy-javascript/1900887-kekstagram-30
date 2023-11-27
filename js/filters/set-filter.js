@@ -7,7 +7,6 @@ const imgFilters = document.querySelector('.img-filters');
 let serverImages = [];
 let currentImages = [];
 
-
 const resetFilterButtons = () => filterButtons.forEach((button) => button.classList.remove('img-filters__button--active'));
 
 const setButtonState = (button) => {
@@ -15,10 +14,8 @@ const setButtonState = (button) => {
   button.classList.add('img-filters__button--active');
 };
 
-const applyFilter = (button) => {
-  setButtonState(button);
-  clearPicturesContainer();
-  switch (button.id) {
+const getFilter = (filter) => {
+  switch (filter) {
     case 'filter-default':
       applyFilterDefault(serverImages);
       break;
@@ -30,11 +27,17 @@ const applyFilter = (button) => {
   }
 };
 
+const setFilter = debounce((filter) => getFilter(filter));
+
+const applyFilter = (button) => {
+  setButtonState(button);
+  clearPicturesContainer();
+  getFilter(button.id);
+};
+
 const onFilterButtonClick = (evt) => applyFilter(evt.target);
 
-const setFilter = debounce((evt) => onFilterButtonClick(evt));
-
-const addClickListener = (button) => button.addEventListener('click', setFilter);
+const addClickListener = (button) => button.addEventListener('click', onFilterButtonClick);
 
 const addFilterListeners = () => filterButtons.forEach((button) => addClickListener(button));
 

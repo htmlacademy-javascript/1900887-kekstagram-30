@@ -8,7 +8,8 @@ const successMessage = successTemplate.querySelector('.success');
 const errorMessage = errorTemplate.querySelector('.error');
 const successButton = successTemplate.querySelector('.success__button');
 const errorButton = errorTemplate.querySelector('.error__button');
-
+const successInner = successMessage.querySelector('.success__inner');
+const errorInner = errorMessage.querySelector('.error__inner');
 const isSuccess = () => document.body.contains(successMessage);
 
 const isError = () => document.body.contains(errorMessage);
@@ -38,10 +39,18 @@ function onDocumentKeydown(evt) {
 }
 
 function onWindowClick(evt) {
-  if ((!successMessage.contains(evt.target) || !errorMessage.contains(evt.target)) && (isSuccess() || isError())) {
+  if ((isError() && !errorInner.contains(evt.target)) || (isSuccess() && !successInner.contains(evt.target))) {
     closeMessageWin();
   }
 }
+
+const onUploadError = () => {
+  document.body.insertAdjacentElement('beforeend', errorMessage);
+  errorButton.addEventListener('click', onErrorBtnClick);
+  window.addEventListener('click', onWindowClick);
+  document.addEventListener('keydown', onDocumentKeydown);
+  disableSubmitBtn(false);
+};
 
 const onUploadSuccess = (response) => {
   if (response.ok) {
@@ -52,20 +61,9 @@ const onUploadSuccess = (response) => {
     document.addEventListener('keydown', onDocumentKeydown);
     closeForm();
   } else {
-    document.body.insertAdjacentElement('beforeend', errorMessage);
-    errorButton.addEventListener('click', onErrorBtnClick);
-    window.addEventListener('click', onWindowClick);
-    document.addEventListener('keydown', onDocumentKeydown);
-    disableSubmitBtn(false);
+    throw new Error();
   }
 };
 
-const onUploadError = () => {
-  document.body.insertAdjacentElement('beforeend', errorMessage);
-  errorButton.addEventListener('click', onErrorBtnClick);
-  window.addEventListener('click', onWindowClick);
-  document.addEventListener('keydown', onDocumentKeydown);
-  disableSubmitBtn(false);
-};
 
 export {onUploadError, onUploadSuccess, isSuccess, isError};

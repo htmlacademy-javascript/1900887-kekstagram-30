@@ -1,8 +1,8 @@
 import {createImages} from '../posts/render.js';
 import {initFilters} from '../filters/set-filter.js';
 
-const UPLOAD_SERVER_URL = 'https://30.javascript.pages.academy/kekstagram';
-const FETCH_SERVER_URL = `${UPLOAD_SERVER_URL}/data`;
+const UPLOAD_SERVER_URL = 'https://30.javascript.pages.academy/kekstagram/';
+const FETCH_SERVER_URL = `${UPLOAD_SERVER_URL.slice()}data`;
 
 const ALERT_SHOW_TIME = 5000;
 
