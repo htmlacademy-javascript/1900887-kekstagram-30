@@ -5,8 +5,7 @@ const ALERT_SHOW_TIME = 5000;
 
 const METHODS = {post: 'POST'};
 
-const dataErrorTemplate = document.querySelector('#data-error').content;
-const dataError = dataErrorTemplate.querySelector('.data-error');
+const dataError = document.querySelector('#data-error').content.querySelector('.data-error');
 
 const processData = (data) => {
   createImages(data);
@@ -20,11 +19,11 @@ const handleError = () => {
   hideErrorMessage();
 };
 
-const sendData = (url, body, resolve, reject) => fetch(
+const sendData = (url, body, resolve, reject, method = METHODS.post) => fetch(
   url,
   {
-    method: METHODS.post,
-    body: body
+    method,
+    body
   })
   .then((response) => resolve(response))
   .catch(() => reject());

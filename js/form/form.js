@@ -6,8 +6,8 @@ import {onUploadError, onUploadSuccess, isError, isSuccess} from './upload-form.
 import {isEscapeKey} from '../utils/utils.js';
 
 const FILE_TYPES = ['jpeg', 'jpg', 'svg', 'png'];
-
 const UPLOAD_SERVER_URL = 'https://30.javascript.pages.academy/kekstagram/';
+const DEFAULT_UPLOAD_IMAGE = 'img/upload-default-image.jpg';
 
 const uploadForm = document.querySelector('.img-upload__form');
 const uploadFormInput = document.querySelector('.img-upload__input');
@@ -31,24 +31,31 @@ const disableSubmitBtn = (isDisabled) => {
 
 const onFormSubmit = async (evt) => {
   evt.preventDefault();
-  disableSubmitBtn(true);
   const isValid = validateForm();
   if (isValid) {
+    disableSubmitBtn(true);
     const formData = new FormData(evt.target);
-    sendData(UPLOAD_SERVER_URL, formData, onUploadSuccess, onUploadError);
+    sendData(UPLOAD_SERVER_URL, formData, onUploadSuccess, onUploadError, 'POST');
   }
 };
 
-const setUploadImage = () => {
+const setUploadImage = (file) => {
+  imgUploadPreview.src = file;
+  imgPreview.forEach((image) => {
+    image.style.backgroundImage = `url('${file}')`;
+  });
+};
+
+const resetUploadPreviews = (file) => setUploadImage(file);
+
+const initUploadImage = () => {
   const file = uploadFormInput.files[0];
   const fileName = file.name.toLowerCase();
   const matches = FILE_TYPES.some((type) => fileName.endsWith(type));
 
   if (matches) {
-    imgUploadPreview.src = URL.createObjectURL(file);
-    imgPreview.forEach((image) => {
-      image.style.backgroundImage = `url('${URL.createObjectURL(file)}')`;
-    });
+    const fileUrl = URL.createObjectURL(file);
+    setUploadImage(fileUrl);
   }
 
   openForm();
@@ -60,7 +67,6 @@ function openForm() {
   uploadForm.addEventListener('submit', onFormSubmit);
   document.body.classList.add('modal-open');
   uploadFormEdit.classList.remove('hidden');
-  disableSubmitBtn(false);
 }
 
 function closeForm() {
@@ -68,19 +74,21 @@ function closeForm() {
   document.body.classList.remove('modal-open');
   uploadFormEdit.classList.add('hidden');
   document.removeEventListener('keydown', onDocumentKeydown);
+  imgUploadCancelBtn.removeEventListener('click', onUploadCancelClick);
   uploadForm.reset();
   resetPristine();
   resetSlider();
   resetImageScale();
+  resetUploadPreviews(DEFAULT_UPLOAD_IMAGE);
 }
 
-const handleInputChange = () => setUploadImage();
+const onInputChange = () => initUploadImage();
 
 const uploadImage = () => {
   initSlider();
   addValidators();
   scalePreview();
-  uploadFormInput.addEventListener('change', handleInputChange);
+  uploadFormInput.addEventListener('change', onInputChange);
 };
 
 export {uploadImage, closeForm, disableSubmitBtn};
