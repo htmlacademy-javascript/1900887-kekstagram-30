@@ -1,31 +1,16 @@
 import {createImages} from '../posts/render.js';
-import {getRandomArrayElement} from '../utils/utils.js';
+import {shuffleArray} from '../utils/utils.js';
 
-const MIN_RANDOM_COUNT = 0;
 const MAX_RANDOM_COUNT = 10;
 
-const sortDiscussed = (images) => images.slice().sort((current, next) => current.comments.length < next.comments.length);
+const sortDiscussed = (images) => images.slice().sort((current, next) => next.comments.length - current.comments.length);
 
-const clearPicturesContainer = () => {
-  const pictures = document.querySelectorAll('.picture');
-  pictures.forEach((element) => element.remove());
-};
+const clearPicturesContainer = () => document.querySelectorAll('.picture').forEach((element) => element.remove());
 
-const applyFilterDefault = (images) => {
-  clearPicturesContainer();
-  createImages(images);
-};
+const applyFilterDefault = (images) => createImages(images);
 
-const applyFilterRandom = (images) => {
-  const randomImageSet = new Set(Array.from({length: images.length}, () => getRandomArrayElement(images)));
-  const filteredImages = Array.from(randomImageSet.values()).slice(MIN_RANDOM_COUNT, MAX_RANDOM_COUNT);
-  clearPicturesContainer();
-  createImages(filteredImages);
-};
+const applyFilterRandom = (images) => createImages(shuffleArray(images).slice(0, MAX_RANDOM_COUNT));
 
-const applyFilterDiscussed = (images) => {
-  clearPicturesContainer();
-  createImages(sortDiscussed(images));
-};
+const applyFilterDiscussed = (images) => createImages(sortDiscussed(images));
 
-export {applyFilterRandom, applyFilterDefault, applyFilterDiscussed};
+export {applyFilterRandom, applyFilterDefault, applyFilterDiscussed, clearPicturesContainer};

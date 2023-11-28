@@ -8,7 +8,8 @@ const successMessage = successTemplate.querySelector('.success');
 const errorMessage = errorTemplate.querySelector('.error');
 const successButton = successTemplate.querySelector('.success__button');
 const errorButton = errorTemplate.querySelector('.error__button');
-
+const successInner = successMessage.querySelector('.success__inner');
+const errorInner = errorMessage.querySelector('.error__inner');
 const isSuccess = () => document.body.contains(successMessage);
 
 const isError = () => document.body.contains(errorMessage);
@@ -18,45 +19,50 @@ const onErrorBtnClick = () => document.body.removeChild(errorMessage);
 const onSuccessBtnClick = () => document.body.removeChild(successMessage);
 
 const closeMessageWin = () => {
-  errorButton.removeEventListener('click', onErrorBtnClick);
-  window.removeEventListener('click', onWindowClick);
+  window.removeEventListener('click', onDocumentClick);
+  document.removeEventListener('keydown', onDocumentKeydown);
+  document.body.classList.remove('modal-open');
 
   if (isSuccess()) {
     document.body.removeChild(successMessage);
+    successButton.removeEventListener('click', onSuccessBtnClick);
   } else {
     document.body.removeChild(errorMessage);
+    errorButton.removeEventListener('click', onErrorBtnClick);
   }
 };
 
-const onDocumentKeydown = (evt) => {
-  if (isEscapeKey(evt) && !evt.target.closest('.text__hashtags') && !evt.target.closest('.text__description') && !isSuccess() && !isError()) {
-    evt.preventDefault();
-    closeForm();
-  }
-};
-
-function onWindowClick(evt) {
-  if ((!successMessage.contains(evt.target) || !errorMessage.contains(evt.target)) && (isSuccess() || isError())) {
+function onDocumentKeydown(evt) {
+  if (isEscapeKey(evt) && (isSuccess() || isError())) {
     closeMessageWin();
   }
 }
 
+function onDocumentClick(evt) {
+  if ((isError() && !errorInner.contains(evt.target)) || (isSuccess() && !successInner.contains(evt.target))) {
+    closeMessageWin();
+  }
+}
+
+const onUploadError = () => {
+  document.body.insertAdjacentElement('beforeend', errorMessage);
+  errorButton.addEventListener('click', onErrorBtnClick);
+  window.addEventListener('click', onDocumentClick);
+  document.addEventListener('keydown', onDocumentKeydown);
+  disableSubmitBtn(false);
+};
+
 const onUploadSuccess = (response) => {
   if (response.ok) {
+    closeForm();
     document.body.insertAdjacentElement('beforeend', successMessage);
     successButton.addEventListener('click', onSuccessBtnClick);
-    window.addEventListener('click', onWindowClick);
-    closeForm();
+    document.addEventListener('click', onDocumentClick);
+    document.addEventListener('keydown', onDocumentKeydown);
   } else {
     throw new Error();
   }
 };
 
-const onUploadError = () => {
-  document.body.insertAdjacentElement('beforeend', errorMessage);
-  errorButton.addEventListener('click', onErrorBtnClick);
-  window.addEventListener('click', onWindowClick);
-  disableSubmitBtn(false);
-};
 
-export {onUploadError, onUploadSuccess, onDocumentKeydown};
+export {onUploadError, onUploadSuccess, isSuccess, isError};

@@ -1,52 +1,59 @@
-import {applyFilterDefault, applyFilterRandom, applyFilterDiscussed} from './filters.js';
+import {applyFilterDefault, applyFilterRandom, applyFilterDiscussed, clearPicturesContainer} from './filters.js';
+import {debounce} from '../utils/utils.js';
 
-const filterDefault = document.querySelector('#filter-default');
-const filterRandom = document.querySelector('#filter-random');
-const filterDiscussed = document.querySelector('#filter-discussed');
+const filterButtons = document.querySelectorAll('.img-filters__button');
 const imgFilters = document.querySelector('.img-filters');
 
 let serverImages = [];
 let currentImages = [];
 
-const resetFilterButtons = () => {
-  filterDefault.classList.remove('img-filters__button--active');
-  filterRandom.classList.remove('img-filters__button--active');
-  filterDiscussed.classList.remove('img-filters__button--active');
+const FILTER_RANDOM = 'filter-random';
+const FILTER_DISCUSSED = 'filter-discussed';
+
+const setButtonState = (button) => {
+  if (!button.classList.contains('.img-filters__button--active')) {
+    document.querySelector('.img-filters__button--active').classList.remove('img-filters__button--active');
+    button.classList.add('img-filters__button--active');
+  }
 };
 
-const setButtonState = (evt) => {
-  resetFilterButtons();
-  evt.target.classList.add('img-filters__button--active');
+const getFilter = (filter) => {
+  switch (filter) {
+    default:
+      applyFilterDefault(serverImages);
+      break;
+    case FILTER_RANDOM:
+      applyFilterRandom(currentImages);
+      break;
+    case FILTER_DISCUSSED:
+      applyFilterDiscussed(serverImages);
+  }
 };
 
-const onDefaultFilterClick = (evt) => {
-  setButtonState(evt);
-  applyFilterDefault(serverImages);
+
+const applyFilter = (button) => {
+  clearPicturesContainer();
+  getFilter(button.id);
 };
 
-const onRandomFilterClick = (evt) => {
-  setButtonState(evt);
-  applyFilterRandom(currentImages);
+const setFilter = debounce((target) => applyFilter(target));
+
+const onFilterButtonClick = (evt) => {
+  setButtonState(evt.target);
+  setFilter(evt.target);
 };
 
-const onDiscussedFilterClick = (evt) => {
-  setButtonState(evt);
-  applyFilterDiscussed(serverImages);
-};
+const addClickListener = (button) => button.addEventListener('click', onFilterButtonClick);
 
-const addFilterListeners = () => {
-  filterDefault.addEventListener('click', onDefaultFilterClick);
-  filterRandom.addEventListener('click', onRandomFilterClick);
-  filterDiscussed.addEventListener('click', onDiscussedFilterClick);
-};
+const addFilterListeners = () => filterButtons.forEach((button) => addClickListener(button));
 
 const showFilterButtons = () => imgFilters.classList.remove('img-filters--inactive');
 
-const setFilters = (data) => {
+const initFilters = (data) => {
   serverImages = data;
   currentImages = serverImages.slice();
   showFilterButtons();
   addFilterListeners();
 };
 
-export {setFilters};
+export {initFilters};
