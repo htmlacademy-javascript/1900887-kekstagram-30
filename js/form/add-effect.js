@@ -7,14 +7,16 @@ const EFFECTS = {
   'heat': {style: 'brightness', unit: '', min: 0, max: 3, step: 0.1}
 };
 
+
 const slider = document.querySelector('.effect-level__slider');
 const effectLevelValue = document.querySelector('.effect-level__value');
 const imagePreview = document.querySelector('.img-upload__preview img');
 const effects = document.querySelector('.effects');
 const effectLevel = document.querySelector('.effect-level');
-const DEFAULT_EFFECT = 'none';
 
 let currentEffect = '';
+
+const DEFAULT_EFFECT = 'none';
 
 const hideSlider = () => slider.classList.add('hidden');
 

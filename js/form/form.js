@@ -7,6 +7,8 @@ import {isEscapeKey} from '../utils/utils.js';
 
 const FILE_TYPES = ['jpeg', 'jpg', 'svg', 'png'];
 
+const UPLOAD_SERVER_URL = 'https://30.javascript.pages.academy/kekstagram/';
+
 const uploadForm = document.querySelector('.img-upload__form');
 const uploadFormInput = document.querySelector('.img-upload__input');
 const uploadFormEdit = document.querySelector('.img-upload__overlay');
@@ -33,7 +35,7 @@ const onFormSubmit = async (evt) => {
   const isValid = validateForm();
   if (isValid) {
     const formData = new FormData(evt.target);
-    sendData(formData, onUploadSuccess, onUploadError);
+    sendData(UPLOAD_SERVER_URL, formData, onUploadSuccess, onUploadError);
   }
 };
 
@@ -58,18 +60,18 @@ function openForm() {
   uploadForm.addEventListener('submit', onFormSubmit);
   document.body.classList.add('modal-open');
   uploadFormEdit.classList.remove('hidden');
+  disableSubmitBtn(false);
 }
 
 function closeForm() {
-  uploadFormEdit.classList.add('hidden');
   uploadFormInput.value = '';
   document.body.classList.remove('modal-open');
+  uploadFormEdit.classList.add('hidden');
   document.removeEventListener('keydown', onDocumentKeydown);
   uploadForm.reset();
   resetPristine();
   resetSlider();
   resetImageScale();
-  disableSubmitBtn(false);
 }
 
 const handleInputChange = () => setUploadImage();

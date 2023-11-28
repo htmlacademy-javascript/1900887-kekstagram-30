@@ -19,7 +19,7 @@ const onErrorBtnClick = () => document.body.removeChild(errorMessage);
 const onSuccessBtnClick = () => document.body.removeChild(successMessage);
 
 const closeMessageWin = () => {
-  window.removeEventListener('click', onWindowClick);
+  window.removeEventListener('click', onDocumentClick);
   document.removeEventListener('keydown', onDocumentKeydown);
   document.body.classList.remove('modal-open');
 
@@ -38,7 +38,7 @@ function onDocumentKeydown(evt) {
   }
 }
 
-function onWindowClick(evt) {
+function onDocumentClick(evt) {
   if ((isError() && !errorInner.contains(evt.target)) || (isSuccess() && !successInner.contains(evt.target))) {
     closeMessageWin();
   }
@@ -47,19 +47,18 @@ function onWindowClick(evt) {
 const onUploadError = () => {
   document.body.insertAdjacentElement('beforeend', errorMessage);
   errorButton.addEventListener('click', onErrorBtnClick);
-  window.addEventListener('click', onWindowClick);
+  window.addEventListener('click', onDocumentClick);
   document.addEventListener('keydown', onDocumentKeydown);
   disableSubmitBtn(false);
 };
 
 const onUploadSuccess = (response) => {
   if (response.ok) {
-    document.body.insertAdjacentElement('beforeend', successMessage);
-    document.body.classList.add('modal-open');
-    successButton.addEventListener('click', onSuccessBtnClick);
-    window.addEventListener('click', onWindowClick);
-    document.addEventListener('keydown', onDocumentKeydown);
     closeForm();
+    document.body.insertAdjacentElement('beforeend', successMessage);
+    successButton.addEventListener('click', onSuccessBtnClick);
+    document.addEventListener('click', onDocumentClick);
+    document.addEventListener('keydown', onDocumentKeydown);
   } else {
     throw new Error();
   }

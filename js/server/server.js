@@ -1,10 +1,9 @@
 import {createImages} from '../posts/render.js';
 import {initFilters} from '../filters/set-filter.js';
 
-const UPLOAD_SERVER_URL = 'https://30.javascript.pages.academy/kekstagram/';
-const FETCH_SERVER_URL = `${UPLOAD_SERVER_URL.slice()}data`;
-
 const ALERT_SHOW_TIME = 5000;
+
+const METHODS = {post: 'POST'};
 
 const dataErrorTemplate = document.querySelector('#data-error').content;
 const dataError = dataErrorTemplate.querySelector('.data-error');
@@ -21,16 +20,16 @@ const handleError = () => {
   hideErrorMessage();
 };
 
-const sendData = (body, resolve, reject) => fetch(
-  UPLOAD_SERVER_URL,
+const sendData = (url, body, resolve, reject) => fetch(
+  url,
   {
-    method: 'POST',
+    method: METHODS.post,
     body: body
   })
   .then((response) => resolve(response))
   .catch(() => reject());
 
-const getData = () => fetch(FETCH_SERVER_URL)
+const getData = (url) => fetch(url)
   .then((response) => response.json())
   .then((data) => processData(data))
   .catch(() => handleError());
