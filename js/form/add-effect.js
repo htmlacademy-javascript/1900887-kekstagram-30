@@ -50,7 +50,9 @@ const setEffect = (effect) => {
 
 const resetSlider = () => {
   currentEffect = DEFAULT_EFFECT;
+  slider.noUiSlider.reset();
   imagePreview.style.filter = null;
+  effectLevelValue.value = '';
   hideSlider();
 };
 
