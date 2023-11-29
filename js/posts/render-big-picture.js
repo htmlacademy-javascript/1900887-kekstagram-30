@@ -10,13 +10,15 @@ const bigPictureCaption = document.querySelector('.social__caption');
 const cancelButton = document.querySelector('.big-picture__cancel');
 const commentContainer = document.querySelector('.social__comment');
 const commentsLoaderBtn = document.querySelector('.social__comments-loader');
-const commentsCount = document.querySelector('.social__comment-count');
 const commentsShownCount = document.querySelector('.social__comment-shown-count');
+const commentsTotalCount = document.querySelector('.social__comment-total-count');
 
 let showedComments = 5;
 let comments = [];
-const onCancelClick = () => hideModal();
-const onEscapePress = (evt) => {
+
+const onCancelBtnClick = () => hideModal();
+
+const onDocumentKeydown = (evt) => {
   if (isEscapeKey(evt)) {
     hideModal();
   }
@@ -46,7 +48,6 @@ const renderComments = (pictureComments) => {
   setLoaderButtonStatus();
 };
 
-
 const onLoadMoreCommentsBtnClick = () => renderComments(comments);
 
 function showModal() {
@@ -54,21 +55,21 @@ function showModal() {
   bigPictureContainer.classList.remove('hidden');
   document.body.classList.add('modal-open');
   commentsLoaderBtn.addEventListener('click', onLoadMoreCommentsBtnClick);
-  cancelButton.addEventListener('click', onCancelClick);
-  document.addEventListener('keydown', onEscapePress);
+  cancelButton.addEventListener('click', onCancelBtnClick);
+  document.addEventListener('keydown', onDocumentKeydown);
 }
 
 function hideModal(){
   bigPictureContainer.classList.add('hidden');
   document.body.classList.remove('modal-open');
-  cancelButton.removeEventListener('click', onCancelClick);
-  document.removeEventListener('keydown', onEscapePress);
+  cancelButton.removeEventListener('click', onCancelBtnClick);
+  document.removeEventListener('keydown', onDocumentKeydown);
 }
 
 const createBigPicture = (picture) => {
   bigPictureImage.src = picture.url;
   bigPictureLikes.textContent = picture.likes;
-  commentsCount.children[1].textContent = picture.comments.length;
+  commentsTotalCount.textContent = picture.comments.length;
   bigPictureCaption.textContent = picture.description;
 };
 

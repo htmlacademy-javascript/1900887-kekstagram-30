@@ -16,21 +16,29 @@ const pristine = new Pristine(uploadForm, {
   errorTextParent: 'img-upload__field-wrapper',
   errorTextClass: 'img-upload__field-wrapper--error',
 });
+
 const createHashTags = (hashtagsString) => hashtagsString.trim().toLowerCase().split(' ').filter((hashtag) => hashtag);
+
 const isValidHashTags = (hashtagsString) => createHashTags(hashtagsString).every((hashtag) => HASHTAG_REGEX.test(hashtag));
+
 const isUniqueHashTags = (hashtagsString) => {
   const hashtags = createHashTags(hashtagsString);
   return hashtags.length === new Set(hashtags).size;
 };
+
 const isValidCount = (hashtagsString) => createHashTags(hashtagsString).length <= HASHTAG_COUNT;
+
 const isCorrectLength = (commentString) => commentString.length <= COMMENT_LENGTH;
+
 const addValidators = () => {
   pristine.addValidator(textHashTags, isValidHashTags, NOT_VALID_HASHTAG, 1, true);
   pristine.addValidator(textHashTags, isUniqueHashTags, DUPLICATED_HASHTAG, 1, true);
   pristine.addValidator(textHashTags, isValidCount, INVALID_HASHTAG_COUNT, 1, true);
   pristine.addValidator(textComments, isCorrectLength, INVALID_COMMENT_LENGTH, 1, true);
 };
+
 const validateForm = () => pristine.validate();
+
 const resetPristine = () => pristine.reset();
 
 export {addValidators, validateForm, resetPristine};
