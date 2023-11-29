@@ -7,6 +7,7 @@ const EFFECTS = {
   'heat': {style: 'brightness', unit: '', min: 0, max: 3, step: 0.1}
 };
 
+const DEFAULT_EFFECT = 'none';
 
 const slider = document.querySelector('.effect-level__slider');
 const effectLevelValue = document.querySelector('.effect-level__value');
@@ -16,11 +17,9 @@ const effectLevel = document.querySelector('.effect-level');
 
 let currentEffect = '';
 
-const DEFAULT_EFFECT = 'none';
+const hideSlider = () => effectLevel.classList.add('hidden');
 
-const hideSlider = () => slider.classList.add('hidden');
-
-const showSlider = () => slider.classList.remove('hidden');
+const showSlider = () => effectLevel.classList.remove('hidden');
 
 const onSliderUpdate = () => {
   effectLevelValue.value = Math.abs(slider.noUiSlider.get());
@@ -32,11 +31,6 @@ const createSlider = (effect) => {
   noUiSlider.create(slider, {start: effect.max, range: {min: effect.min, max: effect.max}, step: effect.step, connect: 'lower'});
   slider.noUiSlider.on('update', onSliderUpdate);
   hideSlider();
-};
-
-const resetSlider = () => {
-  currentEffect = DEFAULT_EFFECT;
-  slider.noUiSlider.reset();
 };
 
 const isDefault = (effect) => effect === DEFAULT_EFFECT;
@@ -54,12 +48,19 @@ const setEffect = (effect) => {
   showSlider();
 };
 
+const resetSlider = () => {
+  currentEffect = DEFAULT_EFFECT;
+  slider.noUiSlider.reset();
+  imagePreview.style.filter = null;
+  effectLevelValue.value = '';
+  hideSlider();
+};
+
 const onEffectChange = (evt) => {
   setEffect(evt.target.value);
   if (isDefault(evt.target.value)) {
     hideSlider();
     imagePreview.style.filter = evt.target.value;
-    effectLevel.classList.add('hidden');
   }
 };
 

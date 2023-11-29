@@ -1,14 +1,14 @@
 import {applyFilterDefault, applyFilterRandom, applyFilterDiscussed, clearPicturesContainer} from './filters.js';
 import {debounce} from '../utils/utils.js';
 
+const FILTER_RANDOM = 'filter-random';
+const FILTER_DISCUSSED = 'filter-discussed';
+
 const filterButtons = document.querySelectorAll('.img-filters__button');
 const imgFilters = document.querySelector('.img-filters');
 
 let serverImages = [];
 let currentImages = [];
-
-const FILTER_RANDOM = 'filter-random';
-const FILTER_DISCUSSED = 'filter-discussed';
 
 const setButtonState = (button) => {
   if (!button.classList.contains('.img-filters__button--active')) {

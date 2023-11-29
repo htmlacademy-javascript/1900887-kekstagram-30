@@ -10,6 +10,7 @@ const successButton = successTemplate.querySelector('.success__button');
 const errorButton = errorTemplate.querySelector('.error__button');
 const successInner = successMessage.querySelector('.success__inner');
 const errorInner = errorMessage.querySelector('.error__inner');
+
 const isSuccess = () => document.body.contains(successMessage);
 
 const isError = () => document.body.contains(errorMessage);
@@ -19,7 +20,7 @@ const onErrorBtnClick = () => document.body.removeChild(errorMessage);
 const onSuccessBtnClick = () => document.body.removeChild(successMessage);
 
 const closeMessageWin = () => {
-  window.removeEventListener('click', onDocumentClick);
+  document.removeEventListener('click', onDocumentClick);
   document.removeEventListener('keydown', onDocumentKeydown);
   document.body.classList.remove('modal-open');
 
@@ -47,7 +48,7 @@ function onDocumentClick(evt) {
 const onUploadError = () => {
   document.body.insertAdjacentElement('beforeend', errorMessage);
   errorButton.addEventListener('click', onErrorBtnClick);
-  window.addEventListener('click', onDocumentClick);
+  document.addEventListener('click', onDocumentClick);
   document.addEventListener('keydown', onDocumentKeydown);
   disableSubmitBtn(false);
 };
@@ -59,6 +60,7 @@ const onUploadSuccess = (response) => {
     successButton.addEventListener('click', onSuccessBtnClick);
     document.addEventListener('click', onDocumentClick);
     document.addEventListener('keydown', onDocumentKeydown);
+    disableSubmitBtn(false);
   } else {
     throw new Error();
   }
